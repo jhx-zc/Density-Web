@@ -54,6 +54,10 @@
           </q-card-section>
         </q-card>
       </q-dialog>
+
+      <q-dialog>
+        <shop-card/>
+      </q-dialog>
     </div>
   </q-page>
 </template>
@@ -61,15 +65,15 @@
 <script lang="ts">
   import { defineComponent, ref, computed } from 'vue'
   import Detail from 'src/components/goods/Detail.vue'
+  import ShopCard from 'src/components/goods/ShopCard.vue'
   import { com } from 'src/service/rpc/rpc'
   import rpc = com.main.module.rpc
-  import IGoods = com.main.module.rpc.IGoods
   import { DMGoods } from 'src/DataManager/Goods'
 
   export default defineComponent({
     name: 'PageIndex',
     components: {
-      Detail,
+      Detail, ShopCard,
     },
     setup() {
       const dmGoods = DMGoods.GetInstance()
@@ -142,11 +146,11 @@
     flex-direction: column;
     position: relative;
 
-    & > div{
+    & > div {
       padding: 8px;
     }
 
-    .goods-detail-card-content{
+    .goods-detail-card-content {
       height: calc(100% - 50px);
       overflow: auto;
     }
