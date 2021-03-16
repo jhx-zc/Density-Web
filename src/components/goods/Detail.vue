@@ -1,0 +1,54 @@
+<template>
+  <q-card flat bordered>
+    <q-img
+        :src="currentGoods.imgUrl"
+    />
+
+    <q-card-section>
+      <div class="text-overline text-orange-9">{{ $t('goods.price') + ': ' + currentGoods.price }} RMB</div>
+      <div class="text-h5 q-mt-sm q-mb-xs">简介</div>
+      <div class="text-caption text-grey">
+        {{ currentGoods.brief }}
+      </div>
+    </q-card-section>
+
+    <q-card-section>
+      <q-separator/>
+      <q-card-section>
+        <div class="text-subitle2" style="overflow: auto;max-height: 120px;">
+          {{ currentGoods.detail }}
+        </div>
+      </q-card-section>
+    </q-card-section>
+
+    <q-card-actions class="justify-center">
+      <q-btn label="加入购物车" icon="shopping_cart" color="primary"/>
+    </q-card-actions>
+
+  </q-card>
+</template>
+
+<script lang="ts">
+import { defineComponent } from 'vue'
+import { com } from 'src/service/rpc/rpc'
+import rpc = com.main.module.rpc
+
+export default defineComponent({
+  name: 'Detail',
+  props: {
+    goods: {
+      type: Object,
+      required: true,
+    },
+  },
+  setup(props) {
+    const currentGoods: rpc.IGoods = props.goods as rpc.IGoods
+
+    return { currentGoods }
+  },
+})
+</script>
+
+<style lang="scss">
+
+</style>
