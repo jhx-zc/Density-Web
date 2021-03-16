@@ -35,8 +35,6 @@ export default defineComponent({
     const onSubmit = () => {
       Login(username.value, password.value).then((isOk) => {
         if (isOk) { Router.push({ path: '/main' }) }
-        // this.$router.push({ path: '/main' })
-        // route.push({ path: '/main' })
       })
     }
 

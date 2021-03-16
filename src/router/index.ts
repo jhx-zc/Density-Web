@@ -7,6 +7,7 @@ import {
 } from 'vue-router'
 import { StateInterface } from '../store'
 import routes from './routes'
+import { LoginPath, loginStatus } from 'src/service/login'
 
 const createHistory =
   process.env.SERVER
@@ -25,6 +26,22 @@ export const Router = createRouter({
   history: createHistory(
     process.env.MODE === 'ssr'? void 0: process.env.VUE_ROUTER_BASE,
   ),
+})
+
+Router.beforeEach((to, from, next) => {
+  if (!loginStatus.isLogin) {
+    if (to.path === LoginPath) {
+      return next()
+    }
+
+    return next(LoginPath)
+  }
+
+  if (to.path === LoginPath) {
+    return next('/')
+  }
+
+  next()
 })
 
 export default route<StateInterface>(function (/* { store, ssrContext } */) {

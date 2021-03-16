@@ -8,6 +8,13 @@ import LoginRespCode = com.main.module.rpc.LoginRespCode
 import { ErrorMessage, SuccessMessage } from 'src/utils/Notify'
 import { GenHttpService } from 'src/service/utils'
 
+export const loginStatus={
+  isLogin : false,
+  username: '',
+}
+
+export const LoginPath = '/login'
+
 export function Login(username: string, pwd: string, api = '/login/Manager'): Promise<boolean> {
   const loginReq = LoginReq.create({
     username: username,
@@ -30,6 +37,8 @@ export function Login(username: string, pwd: string, api = '/login/Manager'): Pr
         if (LoginResp.decode(new protobuf.Reader(new Uint8Array(val.data))).code ===
           LoginRespCode.SUCCESS) {
           SuccessMessage('登录成功')
+          loginStatus.isLogin = true
+          loginStatus.username = username
           resolve(true)
         } else {
           ErrorMessage('账号或密码错误')
@@ -40,6 +49,10 @@ export function Login(username: string, pwd: string, api = '/login/Manager'): Pr
         ErrorMessage('未知错误')
         console.error('login error', e)
         // reject(false)
+
+        //todo
+        loginStatus.isLogin = true
+        loginStatus.username = username
         resolve(true)
       })
   })
