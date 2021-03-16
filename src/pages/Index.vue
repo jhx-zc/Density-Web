@@ -39,15 +39,6 @@
             <q-btn flat color="primary" @click="ShowDetail(oneGoods)" label="查看详情"/>
           </q-card-actions>
         </q-card>
-        <!--        <q-card class="q-ma-sm full-height full-width">
-                  <img src="https://cdn.quasar.dev/img/mountains.jpg" style="height: 200px;width: 320px;"
-                       @click="onGoodsClick(index)">
-                  &lt;!&ndash;          <img src="https://cdn.quasar.dev/img/parallax2.jpg">&ndash;&gt;
-                  <q-card-section>
-                    <div class="text-subtitle1">Name #{{ index }}</div>
-                    <div class="text-body2 brief-container">Brief {{ brief }}</div>
-                  </q-card-section>
-                </q-card>-->
       </q-intersection>
 
       <q-dialog v-model="showDetail" persistent>
@@ -59,8 +50,7 @@
           </q-card-section>
 
           <q-card-section>
-            <detail
-                :goods="currentGoods"/>
+            <detail/>
           </q-card-section>
         </q-card>
       </q-dialog>
@@ -69,7 +59,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from 'vue'
+import { defineComponent, ref ,computed} from 'vue'
 import Detail from 'src/components/goods/Detail.vue'
 import { com } from 'src/service/rpc/rpc'
 import rpc = com.main.module.rpc
@@ -82,20 +72,24 @@ export default defineComponent({
     Detail,
   },
   setup() {
-    const dmGoods = new DMGoods()
+    const dmGoods = DMGoods.GetInstance()
     dmGoods.GenTestData()
-    const goods = ref<Array<IGoods>>(dmGoods.GetGoods())
+
+    const goods = dmGoods.GetGoods()
 
     const showDetail = ref<Boolean>(false)
 
-    const currentGoods = ref<rpc.IGoods>(goods.value[0])
+    const currentGoodsIndex = dmGoods.GetCurrentRowIndex()
+    const currentGoods =computed(()=>{
+      return dmGoods.GetGoods().value[currentGoodsIndex.value]
+    })
 
     const add2ShopCard = (oneGoods: rpc.IGoods) => {
-      currentGoods.value = oneGoods
+      dmGoods.SetCurrentRowIndex(oneGoods)
     }
 
     const ShowDetail = (oneGoods: rpc.IGoods) => {
-      currentGoods.value = oneGoods
+      dmGoods.SetCurrentRowIndex(oneGoods)
       showDetail.value = true
     }
 

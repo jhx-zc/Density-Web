@@ -1,19 +1,46 @@
 import { com } from 'src/service/rpc/rpc'
 import rpc = com.main.module.rpc
 import { queryAll, queryOne } from 'src/service/goods'
+import { ref, Ref } from 'vue'
+// @ts-ignore
+import {cloneDeep} from 'lodash'
 
 export class DMGoods {
-  private container: Array<rpc.IGoods>
+  private readonly container: Ref<Array<rpc.IGoods>>
+  private indexMap: Map<number, number> = new Map<number, number>()
 
-  constructor() {
-    this.container = []
-    this.QueryAll()
+  private static instance: DMGoods | undefined = undefined
+
+  private readonly currentRowIndex = ref<number>(-1)
+
+  static DefaultRowData(): rpc.IGoods {
+    return {
+      id: 0,
+      imgUrl: '',
+      name: '',
+      star: 0,
+      price: 0,
+      brief: '',
+      detail: '',
+      totalSize: 0,
+    }
+  }
+
+  static GetInstance(): DMGoods {
+    if (!DMGoods.instance) { DMGoods.instance = new DMGoods() }
+    return DMGoods.instance
+  }
+
+  private constructor() {
+    this.container = ref([])
+    this.QueryAll();
+    (window as any).DMGoods = this
   }
 
   GenTestData() {
     const goods: Array<rpc.IGoods> = []
     for (let i = 0; i < 100; i++) {
-      goods.push({
+      this.SetStore({
         id: i,
         imgUrl: 'https://cdn.quasar.dev/img/chicken-salad.jpg',
         name: 'Cafe Basilico' + i,
@@ -23,22 +50,37 @@ export class DMGoods {
         detail: 'Detail Small plates, salads & sandwiches in an intimate setting.Detail Small plates, salads & sandwiches in an intimate setting.Detail Small plates, salads & sandwiches in an intimate setting.Detail Small plates, salads & sandwiches in an intimate setting.Detail Small plates, salads & sandwiches in an intimate setting.',
       })
     }
-    this.container = goods
   }
 
   GetGoods() {
-    return [...this.container]
+    return this.container
   }
 
   QueryAll() {
     queryAll().then((val) => {
-      this.container = val
+      for (let i = 0; i < val.length; i++) {
+        this.SetStore(val[i])
+      }
     })
   }
 
   SetStore(data: rpc.IGoods) {
-    const index = this.container.findIndex(item => item.id === data.id)
-    if (index > -1) { this.container[index] = data } else {this.container.push(data)}
+    const index = this.indexMap.get(data.id as number)
+    if (index === undefined) {
+      this.indexMap.set(data.id as number, this.container.value.length)
+      this.container.value.push(data)
+    } else {
+      this.container.value[index] = data
+    }
+  }
+
+  SetCurrentRowIndex(data: rpc.IGoods) {
+    this.currentRowIndex.value = this.indexMap.get(data.id as number) as number
+    this.QueryOne(data)
+  }
+
+  GetCurrentRowIndex(): Ref<number> {
+    return this.currentRowIndex
   }
 
   QueryOne(data: rpc.IGoods) {

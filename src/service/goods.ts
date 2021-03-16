@@ -41,7 +41,7 @@ export function queryOne(d: rpc.IGoods): Promise<rpc.IGoods> {
         resolve(goods)
       })
       .catch(e => {
-        ErrorMessage('查询出错')
+        // ErrorMessage('查询出错')
         console.error('queryOne goods', e)
         reject(false)
       })

@@ -1,7 +1,7 @@
 <template>
   <q-card flat bordered>
     <q-img
-        :src="currentGoods.imgUrl"
+      :src="currentGoods.imgUrl"
     />
 
     <q-card-section>
@@ -29,24 +29,24 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue'
-import { com } from 'src/service/rpc/rpc'
-import rpc = com.main.module.rpc
+  import { computed, defineComponent } from 'vue'
+  import { com } from 'src/service/rpc/rpc'
+  import rpc = com.main.module.rpc
+  import { DMGoods } from 'src/DataManager/Goods'
 
-export default defineComponent({
-  name: 'Detail',
-  props: {
-    goods: {
-      type: Object,
-      required: true,
+  export default defineComponent({
+    name: 'Detail',
+
+    setup() {
+      const dmGoods = DMGoods.GetInstance()
+      const currentGoodsIndex = dmGoods.GetCurrentRowIndex()
+      const currentGoods =computed(()=>{
+        return dmGoods.GetGoods().value[currentGoodsIndex.value]
+      })
+
+      return { currentGoods }
     },
-  },
-  setup(props) {
-    const currentGoods: rpc.IGoods = props.goods as rpc.IGoods
-
-    return { currentGoods }
-  },
-})
+  })
 </script>
 
 <style lang="scss">
