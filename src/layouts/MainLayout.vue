@@ -6,24 +6,14 @@
           {{ $t('common.projectName') }}
         </q-toolbar-title>
 
-        <!--        <q-btn-dropdown color="primary" :label="$t('common.lang')" unelevated>-->
-        <!--          <q-list>-->
-        <!--            <q-item clickable v-close-popup @click="changeLocation()">-->
-        <!--              <q-item-section>-->
-        <!--                <q-item-label>{{ $t('lang.zh') }}</q-item-label>-->
-        <!--              </q-item-section>-->
-        <!--            </q-item>-->
-
-        <!--            <q-item clickable v-close-popup @click="changeLocation('en')">-->
-        <!--              <q-item-section>-->
-        <!--                <q-item-label>{{ $t('lang.en') }}</q-item-label>-->
-        <!--              </q-item-section>-->
-        <!--            </q-item>-->
-        <!--          </q-list>-->
-        <!--        </q-btn-dropdown>-->
+        <template v-if='loginStatus?.isLogin===true'>
+          <div class='text-h6'>
+            {{ loginStatus?.username ?? '' }}
+          </div>
+          <q-btn flat round dense icon="shopping_cart" class='q-ml-md' @click='onShopCardClick'/>
+        </template>
       </q-toolbar>
     </q-header>
-
     <q-page-container>
       <router-view class="main-page-container"/>
     </q-page-container>
@@ -32,20 +22,23 @@
 
 <script lang="ts">
 
-import { defineComponent } from 'vue'
-import { changeLocation } from 'boot/i18n'
+  import { defineComponent } from 'vue'
+  import { loginStatus } from 'src/service/login'
 
-export default defineComponent({
-  name: 'MainLayout',
+  export default defineComponent({
+    name: 'MainLayout',
 
-  setup() {
-    return { changeLocation }
-  },
-})
+    setup() {
+      const onShopCardClick = () => {
+        // isShowShopCart.value = !isShowShopCart.value
+      }
+      return { loginStatus, onShopCardClick }
+    },
+  })
 </script>
 
 <style lang="scss">
-.main-page-container > div {
-  height: calc(100vh - 50px);
-}
+  .main-page-container > div {
+    height: calc(100vh - 50px);
+  }
 </style>
