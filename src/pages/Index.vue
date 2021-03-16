@@ -54,10 +54,6 @@
           </q-card-section>
         </q-card>
       </q-dialog>
-
-      <q-dialog>
-        <shop-card/>
-      </q-dialog>
     </div>
   </q-page>
 </template>
@@ -65,7 +61,6 @@
 <script lang="ts">
   import { defineComponent, ref, computed } from 'vue'
   import Detail from 'src/components/goods/Detail.vue'
-  import ShopCard from 'src/components/goods/ShopCard.vue'
   import { com } from 'src/service/rpc/rpc'
   import rpc = com.main.module.rpc
   import { DMGoods } from 'src/DataManager/Goods'
@@ -73,7 +68,7 @@
   export default defineComponent({
     name: 'PageIndex',
     components: {
-      Detail, ShopCard,
+      Detail,
     },
     setup() {
       const dmGoods = DMGoods.GetInstance()
@@ -97,7 +92,9 @@
         showDetail.value = true
       }
 
-      return { goods, add2ShopCard, ShowDetail, showDetail, currentGoods }
+      const showShopCard = ()=>{}
+
+      return { goods, add2ShopCard, ShowDetail, showDetail, currentGoods,showShopCard }
     },
   })
 </script>

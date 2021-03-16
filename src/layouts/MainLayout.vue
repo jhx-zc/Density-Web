@@ -17,22 +17,40 @@
     <q-page-container>
       <router-view class="main-page-container"/>
     </q-page-container>
+
+    <q-dialog v-model='showShopCard' persistent class='z-top' full-height full-width>
+      <q-card class='main-shop-card-page'>
+        <q-card-section class="row items-center q-pb-none shop-card-title bg-primary text-white">
+          <div class="text-h6">购物车</div>
+          <q-space/>
+          <q-btn icon="close" flat round dense v-close-popup/>
+        </q-card-section>
+
+        <q-card-section class='shop-card-content'>
+          <shop-card/>
+        </q-card-section>
+      </q-card>
+    </q-dialog>
   </q-layout>
 </template>
 
 <script lang="ts">
-
-  import { defineComponent } from 'vue'
+  import { defineComponent, ref } from 'vue'
   import { loginStatus } from 'src/service/login'
+  import ShopCard from 'src/components/goods/ShopCard.vue'
 
   export default defineComponent({
     name: 'MainLayout',
-
+    components: {
+      ShopCard,
+    },
     setup() {
+      const showShopCard = ref<Boolean>(false)
+
       const onShopCardClick = () => {
-        // isShowShopCart.value = !isShowShopCart.value
+        showShopCard.value = true
       }
-      return { loginStatus, onShopCardClick }
+      return { loginStatus, showShopCard, onShopCardClick }
     },
   })
 </script>
@@ -40,5 +58,14 @@
 <style lang="scss">
   .main-page-container > div {
     height: calc(100vh - 50px);
+  }
+
+  .main-shop-card-page {
+    & > div {
+      padding: 8px;
+    }
+    .shop-card-content{
+      height: calc(100% - 50px);
+    }
   }
 </style>

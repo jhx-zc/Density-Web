@@ -1,7 +1,7 @@
 <template>
-  <q-card>
-    Shop Card
-  </q-card>
+  <div class='full-width full-height shop-card-page'>
+
+  </div>
 </template>
 
 <script lang='ts'>
