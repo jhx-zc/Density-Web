@@ -1,6 +1,5 @@
-import { com } from 'src/service/rpc/rpc'
-import rpc = com.main.module.rpc
 import { DataManager } from 'src/DataManager/DataManager'
+import { rpc } from 'src/service/rpc/rpc'
 
 export class DMGoods extends DataManager<rpc.IGoods> {
   private static instance: DMGoods | undefined = undefined

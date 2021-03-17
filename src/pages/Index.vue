@@ -62,8 +62,7 @@
   import { defineComponent, ref, onMounted, computed } from 'vue'
   import Detail from 'src/components/goods/Detail.vue'
   import { DMGoods } from 'src/DataManager/Goods'
-  import { com } from 'src/service/rpc/rpc'
-  import rpc = com.main.module.rpc
+  import { rpc } from 'src/service/rpc/rpc'
 
   export default defineComponent({
     name: 'PageIndex',

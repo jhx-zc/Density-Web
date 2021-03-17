@@ -1,12 +1,11 @@
 import { goodsQueryAll, goodsQueryOne, goodsUpdateOne, serverAddr } from 'src/service/config'
 import { ErrorMessage } from 'src/utils/Notify'
-import { com } from 'src/service/rpc/rpc'
 import protobuf from 'protobufjs'
 import { GenHttpService } from 'src/service/utils'
-import rpc = com.main.module.rpc
-import GoodsList = com.main.module.rpc.GoodsList
-import Goods = com.main.module.rpc.Goods
-import GoodsUpdateRet = com.main.module.rpc.GoodsUpdateRet
+import { rpc } from 'src/service/rpc/rpc'
+import GoodsList = rpc.GoodsList
+import Goods = rpc.Goods
+import GoodsUpdateRet = rpc.GoodsUpdateRet
 
 export function queryAll(): Promise<Array<rpc.IGoods>> {
   const httpService = GenHttpService()

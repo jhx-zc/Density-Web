@@ -1,8 +1,8 @@
 import { GenHttpService } from 'src/service/utils'
 import { goodsQueryAll, serverAddr } from 'src/service/config'
 import { ErrorMessage } from 'src/utils/Notify'
-import { com } from 'src/service/rpc/rpc'
-import IShopGoods = com.main.module.rpc.IShopGoods
+import { rpc } from 'src/service/rpc/rpc'
+import IShopGoods = rpc.IShopGoods
 
 export function queryAll(): Promise<Array<IShopGoods>> {
   const httpService = GenHttpService()

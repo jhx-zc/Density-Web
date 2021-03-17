@@ -1,12 +1,11 @@
-import { com } from 'src/service/rpc/rpc'
-import axios from 'axios'
 import protobuf from 'protobufjs'
 import { serverAddr } from 'src/service/config'
-import LoginReq = com.main.module.rpc.LoginReq
-import LoginResp = com.main.module.rpc.LoginResp
-import LoginRespCode = com.main.module.rpc.LoginRespCode
 import { ErrorMessage, SuccessMessage } from 'src/utils/Notify'
 import { GenHttpService } from 'src/service/utils'
+import { rpc } from 'src/service/rpc/rpc'
+import LoginReq = rpc.LoginReq
+import LoginResp = rpc.LoginResp
+import LoginRespCode = rpc.LoginRespCode
 
 export const loginStatus={
   isLogin : false,
