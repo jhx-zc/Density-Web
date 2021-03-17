@@ -61,9 +61,9 @@
 <script lang="ts">
   import { defineComponent, ref, onMounted, computed } from 'vue'
   import Detail from 'src/components/goods/Detail.vue'
-  import { com } from 'src/service/rpc/rpc'
   import { IDMGoods } from 'src/DataManager/Goods'
-  import { rpc } from 'protobufjs'
+  import { com } from 'src/service/rpc/rpc'
+  import rpc = com.main.module.rpc
 
   export default defineComponent({
     name: 'PageIndex',
@@ -74,7 +74,7 @@
       const showDetail = ref<Boolean>(false)
 
       const dmGoods = IDMGoods.GetInstance()
-      const goods = dmGoods.GetAllData()
+      const container = dmGoods.GetAllData()
       const currentRowIndex = dmGoods.GetCurrentRowIndex()
       const currentGoods = computed(()=>{
         return dmGoods.GetDataByIndex(currentRowIndex.value)
@@ -90,6 +90,12 @@
       }
 
       const showShopCard = ()=>{}
+
+      const updateTag = dmGoods.GetUpdateTag()
+      const goods = computed(()=>{
+        updateTag.value = updateTag.value
+        return Object.freeze([...container])
+      })
 
       onMounted(() => {
         dmGoods.genTestData()
@@ -160,7 +166,7 @@
   }
 
   .goods-detail-card {
-    max-height: 65vh !important;
+    max-height: 75vh !important;
 
     display: flex;
     flex-direction: column;

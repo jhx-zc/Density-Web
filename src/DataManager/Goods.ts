@@ -54,7 +54,7 @@ export class IDMGoods extends DataManager<rpc.IGoods> {
   }
 
   genTestData(): any {
-    for (let i = 0; i < 90000; i++) {
+    for (let i = 0; i < 900; i++) {
       this.SetStore({
         id: i,
         imgUrl: 'https://cdn.quasar.dev/img/chicken-salad.jpg',

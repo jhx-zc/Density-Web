@@ -2,9 +2,11 @@ import { ref, Ref } from 'vue'
 import { ErrorMessage, SuccessMessage } from 'src/utils/Notify'
 
 export abstract class DataManager<T> {
-  private readonly container: Ref<Array<T>> = ref([])
+  private container: Array<T> = []
   //goodsId -> container index
-  private readonly indexMap: Ref<Map<any, number>> = ref(new Map<any, number>())
+  private indexMap: Map<any, number> = new Map<any, number>()
+
+  private updateTag: Ref<number> = ref(0)
 
   private readonly currentRowIndex = ref<number>(-1)
 
@@ -27,57 +29,67 @@ export abstract class DataManager<T> {
 
   abstract genTestData(): any
 
-  GetAllData():Ref<Array<T>>{
+  private updateDataTag() {
+    if (this.updateTag.value < 0xffff) { this.updateTag.value++ } else { this.updateTag.value = 0 }
+  }
+
+  private removeIndex(d: T) {
+    this.indexMap.delete(this.getKey(d))
+  }
+
+  GetUpdateTag(): Ref<number> {
+    return this.updateTag
+  }
+
+  GetAllData(): Array<T> {
     return this.container
   }
 
-  GetDataByIndex(index:number):T{
-    return this.container.value[index]
+  GetDataByIndex(index: number): T {
+    return this.container[index]
   }
 
   SetStore(d: T) {
     const index = this.GetIndex(d)
     if (index === -1) {
-      this.indexMap.value.set(this.getKey(d), this.container.value.length)
-      this.container.value.push(d)
+      this.indexMap.set(this.getKey(d), this.container.length)
+      this.container.push(d)
     } else {
-      this.container.value[index] = d
+      this.container[index] = d
     }
+    this.updateDataTag()
   }
 
   DeleteFromStore(d: T) {
-    this.RemoveIndex(d)
+    this.removeIndex(d)
 
     const containerBack: Array<T> = []
     const indexMapBack: Map<any, number> = new Map<any, number>()
 
-    if (this.container.value.length - this.indexMap.value.size > 200) {
-      this.indexMap.value.forEach((index, key: any) => {
-        containerBack.push(this.container.value[index])
+    if (this.container.length - this.indexMap.size > 200) {
+      this.indexMap.forEach((index, key: any) => {
+        containerBack.push(this.container[index])
         indexMapBack.set(key, index)
       })
 
-      this.container.value = containerBack
-      this.indexMap.value = indexMapBack
+      this.container = containerBack
+      this.indexMap = indexMapBack
     }
+    this.updateDataTag()
   }
 
   //return -1 if can not get index
   GetIndex(d: T): number {
-    const index = this.indexMap.value.get(this.getKey(d))
+    const index = this.indexMap.get(this.getKey(d))
     if (index === undefined) { return -1 }
     return index
   }
 
-  RemoveIndex(d: T) {
-    this.indexMap.value.delete(this.getKey(d))
-  }
-
-  SetCurrentRowIndex(d:T){
+  SetCurrentRowIndex(d: T) {
     this.currentRowIndex.value = this.GetIndex(d)
   }
 
-  GetCurrentRowIndex():Ref<number>{
+  GetCurrentRowIndex(): Ref<number> {
     return this.currentRowIndex
   }
 
