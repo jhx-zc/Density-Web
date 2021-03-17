@@ -492,6 +492,24 @@ $root.com = (function() {
                     return LoginResp;
                 })();
 
+                /**
+                 * GoodsTypes enum.
+                 * @name com.main.module.rpc.GoodsTypes
+                 * @enum {number}
+                 * @property {number} Digital=0 Digital value
+                 * @property {number} HomeAppliances=1 HomeAppliances value
+                 * @property {number} DailyNecessities=2 DailyNecessities value
+                 * @property {number} Clothing=3 Clothing value
+                 */
+                rpc.GoodsTypes = (function() {
+                    var valuesById = {}, values = Object.create(valuesById);
+                    values[valuesById[0] = "Digital"] = 0;
+                    values[valuesById[1] = "HomeAppliances"] = 1;
+                    values[valuesById[2] = "DailyNecessities"] = 2;
+                    values[valuesById[3] = "Clothing"] = 3;
+                    return values;
+                })();
+
                 rpc.Goods = (function() {
 
                     /**
@@ -505,6 +523,7 @@ $root.com = (function() {
                      * @property {number|null} [price] Goods price
                      * @property {string|null} [brief] Goods brief
                      * @property {string|null} [detail] Goods detail
+                     * @property {com.main.module.rpc.GoodsTypes|null} [goodsType] Goods goodsType
                      * @property {number|null} [totalSize] Goods totalSize
                      */
 
@@ -580,6 +599,14 @@ $root.com = (function() {
                     Goods.prototype.detail = "";
 
                     /**
+                     * Goods goodsType.
+                     * @member {com.main.module.rpc.GoodsTypes} goodsType
+                     * @memberof com.main.module.rpc.Goods
+                     * @instance
+                     */
+                    Goods.prototype.goodsType = 0;
+
+                    /**
                      * Goods totalSize.
                      * @member {number} totalSize
                      * @memberof com.main.module.rpc.Goods
@@ -625,8 +652,10 @@ $root.com = (function() {
                             writer.uint32(/* id 6, wireType 2 =*/50).string(message.brief);
                         if (message.detail != null && Object.hasOwnProperty.call(message, "detail"))
                             writer.uint32(/* id 7, wireType 2 =*/58).string(message.detail);
+                        if (message.goodsType != null && Object.hasOwnProperty.call(message, "goodsType"))
+                            writer.uint32(/* id 8, wireType 0 =*/64).int32(message.goodsType);
                         if (message.totalSize != null && Object.hasOwnProperty.call(message, "totalSize"))
-                            writer.uint32(/* id 8, wireType 0 =*/64).int32(message.totalSize);
+                            writer.uint32(/* id 9, wireType 0 =*/72).int32(message.totalSize);
                         return writer;
                     };
 
@@ -683,6 +712,9 @@ $root.com = (function() {
                                 message.detail = reader.string();
                                 break;
                             case 8:
+                                message.goodsType = reader.int32();
+                                break;
+                            case 9:
                                 message.totalSize = reader.int32();
                                 break;
                             default:
@@ -741,6 +773,16 @@ $root.com = (function() {
                         if (message.detail != null && message.hasOwnProperty("detail"))
                             if (!$util.isString(message.detail))
                                 return "detail: string expected";
+                        if (message.goodsType != null && message.hasOwnProperty("goodsType"))
+                            switch (message.goodsType) {
+                            default:
+                                return "goodsType: enum value expected";
+                            case 0:
+                            case 1:
+                            case 2:
+                            case 3:
+                                break;
+                            }
                         if (message.totalSize != null && message.hasOwnProperty("totalSize"))
                             if (!$util.isInteger(message.totalSize))
                                 return "totalSize: integer expected";
@@ -773,6 +815,24 @@ $root.com = (function() {
                             message.brief = String(object.brief);
                         if (object.detail != null)
                             message.detail = String(object.detail);
+                        switch (object.goodsType) {
+                        case "Digital":
+                        case 0:
+                            message.goodsType = 0;
+                            break;
+                        case "HomeAppliances":
+                        case 1:
+                            message.goodsType = 1;
+                            break;
+                        case "DailyNecessities":
+                        case 2:
+                            message.goodsType = 2;
+                            break;
+                        case "Clothing":
+                        case 3:
+                            message.goodsType = 3;
+                            break;
+                        }
                         if (object.totalSize != null)
                             message.totalSize = object.totalSize | 0;
                         return message;
@@ -799,6 +859,7 @@ $root.com = (function() {
                             object.price = 0;
                             object.brief = "";
                             object.detail = "";
+                            object.goodsType = options.enums === String ? "Digital" : 0;
                             object.totalSize = 0;
                         }
                         if (message.id != null && message.hasOwnProperty("id"))
@@ -815,6 +876,8 @@ $root.com = (function() {
                             object.brief = message.brief;
                         if (message.detail != null && message.hasOwnProperty("detail"))
                             object.detail = message.detail;
+                        if (message.goodsType != null && message.hasOwnProperty("goodsType"))
+                            object.goodsType = options.enums === String ? $root.com.main.module.rpc.GoodsTypes[message.goodsType] : message.goodsType;
                         if (message.totalSize != null && message.hasOwnProperty("totalSize"))
                             object.totalSize = message.totalSize;
                         return object;
@@ -1227,6 +1290,216 @@ $root.com = (function() {
                     };
 
                     return GoodsUpdateRet;
+                })();
+
+                rpc.ShopGoods = (function() {
+
+                    /**
+                     * Properties of a ShopGoods.
+                     * @memberof com.main.module.rpc
+                     * @interface IShopGoods
+                     * @property {number|null} [goodsId] ShopGoods goodsId
+                     * @property {number|null} [count] ShopGoods count
+                     */
+
+                    /**
+                     * Constructs a new ShopGoods.
+                     * @memberof com.main.module.rpc
+                     * @classdesc Represents a ShopGoods.
+                     * @implements IShopGoods
+                     * @constructor
+                     * @param {com.main.module.rpc.IShopGoods=} [properties] Properties to set
+                     */
+                    function ShopGoods(properties) {
+                        if (properties)
+                            for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                                if (properties[keys[i]] != null)
+                                    this[keys[i]] = properties[keys[i]];
+                    }
+
+                    /**
+                     * ShopGoods goodsId.
+                     * @member {number} goodsId
+                     * @memberof com.main.module.rpc.ShopGoods
+                     * @instance
+                     */
+                    ShopGoods.prototype.goodsId = 0;
+
+                    /**
+                     * ShopGoods count.
+                     * @member {number} count
+                     * @memberof com.main.module.rpc.ShopGoods
+                     * @instance
+                     */
+                    ShopGoods.prototype.count = 0;
+
+                    /**
+                     * Creates a new ShopGoods instance using the specified properties.
+                     * @function create
+                     * @memberof com.main.module.rpc.ShopGoods
+                     * @static
+                     * @param {com.main.module.rpc.IShopGoods=} [properties] Properties to set
+                     * @returns {com.main.module.rpc.ShopGoods} ShopGoods instance
+                     */
+                    ShopGoods.create = function create(properties) {
+                        return new ShopGoods(properties);
+                    };
+
+                    /**
+                     * Encodes the specified ShopGoods message. Does not implicitly {@link com.main.module.rpc.ShopGoods.verify|verify} messages.
+                     * @function encode
+                     * @memberof com.main.module.rpc.ShopGoods
+                     * @static
+                     * @param {com.main.module.rpc.IShopGoods} message ShopGoods message or plain object to encode
+                     * @param {$protobuf.Writer} [writer] Writer to encode to
+                     * @returns {$protobuf.Writer} Writer
+                     */
+                    ShopGoods.encode = function encode(message, writer) {
+                        if (!writer)
+                            writer = $Writer.create();
+                        if (message.goodsId != null && Object.hasOwnProperty.call(message, "goodsId"))
+                            writer.uint32(/* id 1, wireType 0 =*/8).int32(message.goodsId);
+                        if (message.count != null && Object.hasOwnProperty.call(message, "count"))
+                            writer.uint32(/* id 2, wireType 0 =*/16).int32(message.count);
+                        return writer;
+                    };
+
+                    /**
+                     * Encodes the specified ShopGoods message, length delimited. Does not implicitly {@link com.main.module.rpc.ShopGoods.verify|verify} messages.
+                     * @function encodeDelimited
+                     * @memberof com.main.module.rpc.ShopGoods
+                     * @static
+                     * @param {com.main.module.rpc.IShopGoods} message ShopGoods message or plain object to encode
+                     * @param {$protobuf.Writer} [writer] Writer to encode to
+                     * @returns {$protobuf.Writer} Writer
+                     */
+                    ShopGoods.encodeDelimited = function encodeDelimited(message, writer) {
+                        return this.encode(message, writer).ldelim();
+                    };
+
+                    /**
+                     * Decodes a ShopGoods message from the specified reader or buffer.
+                     * @function decode
+                     * @memberof com.main.module.rpc.ShopGoods
+                     * @static
+                     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+                     * @param {number} [length] Message length if known beforehand
+                     * @returns {com.main.module.rpc.ShopGoods} ShopGoods
+                     * @throws {Error} If the payload is not a reader or valid buffer
+                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                     */
+                    ShopGoods.decode = function decode(reader, length) {
+                        if (!(reader instanceof $Reader))
+                            reader = $Reader.create(reader);
+                        var end = length === undefined ? reader.len : reader.pos + length, message = new $root.com.main.module.rpc.ShopGoods();
+                        while (reader.pos < end) {
+                            var tag = reader.uint32();
+                            switch (tag >>> 3) {
+                            case 1:
+                                message.goodsId = reader.int32();
+                                break;
+                            case 2:
+                                message.count = reader.int32();
+                                break;
+                            default:
+                                reader.skipType(tag & 7);
+                                break;
+                            }
+                        }
+                        return message;
+                    };
+
+                    /**
+                     * Decodes a ShopGoods message from the specified reader or buffer, length delimited.
+                     * @function decodeDelimited
+                     * @memberof com.main.module.rpc.ShopGoods
+                     * @static
+                     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+                     * @returns {com.main.module.rpc.ShopGoods} ShopGoods
+                     * @throws {Error} If the payload is not a reader or valid buffer
+                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                     */
+                    ShopGoods.decodeDelimited = function decodeDelimited(reader) {
+                        if (!(reader instanceof $Reader))
+                            reader = new $Reader(reader);
+                        return this.decode(reader, reader.uint32());
+                    };
+
+                    /**
+                     * Verifies a ShopGoods message.
+                     * @function verify
+                     * @memberof com.main.module.rpc.ShopGoods
+                     * @static
+                     * @param {Object.<string,*>} message Plain object to verify
+                     * @returns {string|null} `null` if valid, otherwise the reason why it is not
+                     */
+                    ShopGoods.verify = function verify(message) {
+                        if (typeof message !== "object" || message === null)
+                            return "object expected";
+                        if (message.goodsId != null && message.hasOwnProperty("goodsId"))
+                            if (!$util.isInteger(message.goodsId))
+                                return "goodsId: integer expected";
+                        if (message.count != null && message.hasOwnProperty("count"))
+                            if (!$util.isInteger(message.count))
+                                return "count: integer expected";
+                        return null;
+                    };
+
+                    /**
+                     * Creates a ShopGoods message from a plain object. Also converts values to their respective internal types.
+                     * @function fromObject
+                     * @memberof com.main.module.rpc.ShopGoods
+                     * @static
+                     * @param {Object.<string,*>} object Plain object
+                     * @returns {com.main.module.rpc.ShopGoods} ShopGoods
+                     */
+                    ShopGoods.fromObject = function fromObject(object) {
+                        if (object instanceof $root.com.main.module.rpc.ShopGoods)
+                            return object;
+                        var message = new $root.com.main.module.rpc.ShopGoods();
+                        if (object.goodsId != null)
+                            message.goodsId = object.goodsId | 0;
+                        if (object.count != null)
+                            message.count = object.count | 0;
+                        return message;
+                    };
+
+                    /**
+                     * Creates a plain object from a ShopGoods message. Also converts values to other types if specified.
+                     * @function toObject
+                     * @memberof com.main.module.rpc.ShopGoods
+                     * @static
+                     * @param {com.main.module.rpc.ShopGoods} message ShopGoods
+                     * @param {$protobuf.IConversionOptions} [options] Conversion options
+                     * @returns {Object.<string,*>} Plain object
+                     */
+                    ShopGoods.toObject = function toObject(message, options) {
+                        if (!options)
+                            options = {};
+                        var object = {};
+                        if (options.defaults) {
+                            object.goodsId = 0;
+                            object.count = 0;
+                        }
+                        if (message.goodsId != null && message.hasOwnProperty("goodsId"))
+                            object.goodsId = message.goodsId;
+                        if (message.count != null && message.hasOwnProperty("count"))
+                            object.count = message.count;
+                        return object;
+                    };
+
+                    /**
+                     * Converts this ShopGoods to JSON.
+                     * @function toJSON
+                     * @memberof com.main.module.rpc.ShopGoods
+                     * @instance
+                     * @returns {Object.<string,*>} JSON object
+                     */
+                    ShopGoods.prototype.toJSON = function toJSON() {
+                        return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+                    };
+
+                    return ShopGoods;
                 })();
 
                 return rpc;

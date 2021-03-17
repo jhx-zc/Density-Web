@@ -30,13 +30,13 @@
 
 <script lang="ts">
   import { computed, defineComponent } from 'vue'
-  import { IDMGoods } from 'src/DataManager/Goods'
+  import { DMGoods } from 'src/DataManager/Goods'
 
   export default defineComponent({
     name: 'Detail',
 
     setup() {
-      const dmGoods = IDMGoods.GetInstance()
+      const dmGoods = DMGoods.GetInstance()
       const currentGoodsIndex = dmGoods.GetCurrentRowIndex()
       const allData = dmGoods.GetAllData()
       const updateTag = dmGoods.GetUpdateTag()

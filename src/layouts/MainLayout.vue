@@ -18,7 +18,7 @@
       <router-view class="main-page-container"/>
     </q-page-container>
 
-    <q-dialog v-model='showShopCard' persistent class='z-top' full-height full-width>
+    <q-dialog v-model='showShopCard' persistent class='z-top' full-height>
       <q-card class='main-shop-card-page'>
         <q-card-section class="row items-center q-pb-none shop-card-title bg-primary text-white">
           <div class="text-h6">购物车</div>
@@ -61,6 +61,8 @@
   }
 
   .main-shop-card-page {
+    width: 70vw;
+    max-width: unset !important;
     & > div {
       padding: 8px;
     }

@@ -209,6 +209,14 @@ export namespace com {
                     public toJSON(): { [k: string]: any };
                 }
 
+                /** GoodsTypes enum. */
+                enum GoodsTypes {
+                    Digital = 0,
+                    HomeAppliances = 1,
+                    DailyNecessities = 2,
+                    Clothing = 3
+                }
+
                 /** Properties of a Goods. */
                 interface IGoods {
 
@@ -232,6 +240,9 @@ export namespace com {
 
                     /** Goods detail */
                     detail?: (string|null);
+
+                    /** Goods goodsType */
+                    goodsType?: (com.main.module.rpc.GoodsTypes|null);
 
                     /** Goods totalSize */
                     totalSize?: (number|null);
@@ -266,6 +277,9 @@ export namespace com {
 
                     /** Goods detail. */
                     public detail: string;
+
+                    /** Goods goodsType. */
+                    public goodsType: com.main.module.rpc.GoodsTypes;
 
                     /** Goods totalSize. */
                     public totalSize: number;
@@ -516,6 +530,102 @@ export namespace com {
 
                     /**
                      * Converts this GoodsUpdateRet to JSON.
+                     * @returns JSON object
+                     */
+                    public toJSON(): { [k: string]: any };
+                }
+
+                /** Properties of a ShopGoods. */
+                interface IShopGoods {
+
+                    /** ShopGoods goodsId */
+                    goodsId?: (number|null);
+
+                    /** ShopGoods count */
+                    count?: (number|null);
+                }
+
+                /** Represents a ShopGoods. */
+                class ShopGoods implements IShopGoods {
+
+                    /**
+                     * Constructs a new ShopGoods.
+                     * @param [properties] Properties to set
+                     */
+                    constructor(properties?: com.main.module.rpc.IShopGoods);
+
+                    /** ShopGoods goodsId. */
+                    public goodsId: number;
+
+                    /** ShopGoods count. */
+                    public count: number;
+
+                    /**
+                     * Creates a new ShopGoods instance using the specified properties.
+                     * @param [properties] Properties to set
+                     * @returns ShopGoods instance
+                     */
+                    public static create(properties?: com.main.module.rpc.IShopGoods): com.main.module.rpc.ShopGoods;
+
+                    /**
+                     * Encodes the specified ShopGoods message. Does not implicitly {@link com.main.module.rpc.ShopGoods.verify|verify} messages.
+                     * @param message ShopGoods message or plain object to encode
+                     * @param [writer] Writer to encode to
+                     * @returns Writer
+                     */
+                    public static encode(message: com.main.module.rpc.IShopGoods, writer?: $protobuf.Writer): $protobuf.Writer;
+
+                    /**
+                     * Encodes the specified ShopGoods message, length delimited. Does not implicitly {@link com.main.module.rpc.ShopGoods.verify|verify} messages.
+                     * @param message ShopGoods message or plain object to encode
+                     * @param [writer] Writer to encode to
+                     * @returns Writer
+                     */
+                    public static encodeDelimited(message: com.main.module.rpc.IShopGoods, writer?: $protobuf.Writer): $protobuf.Writer;
+
+                    /**
+                     * Decodes a ShopGoods message from the specified reader or buffer.
+                     * @param reader Reader or buffer to decode from
+                     * @param [length] Message length if known beforehand
+                     * @returns ShopGoods
+                     * @throws {Error} If the payload is not a reader or valid buffer
+                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                     */
+                    public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): com.main.module.rpc.ShopGoods;
+
+                    /**
+                     * Decodes a ShopGoods message from the specified reader or buffer, length delimited.
+                     * @param reader Reader or buffer to decode from
+                     * @returns ShopGoods
+                     * @throws {Error} If the payload is not a reader or valid buffer
+                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                     */
+                    public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): com.main.module.rpc.ShopGoods;
+
+                    /**
+                     * Verifies a ShopGoods message.
+                     * @param message Plain object to verify
+                     * @returns `null` if valid, otherwise the reason why it is not
+                     */
+                    public static verify(message: { [k: string]: any }): (string|null);
+
+                    /**
+                     * Creates a ShopGoods message from a plain object. Also converts values to their respective internal types.
+                     * @param object Plain object
+                     * @returns ShopGoods
+                     */
+                    public static fromObject(object: { [k: string]: any }): com.main.module.rpc.ShopGoods;
+
+                    /**
+                     * Creates a plain object from a ShopGoods message. Also converts values to other types if specified.
+                     * @param message ShopGoods
+                     * @param [options] Conversion options
+                     * @returns Plain object
+                     */
+                    public static toObject(message: com.main.module.rpc.ShopGoods, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+                    /**
+                     * Converts this ShopGoods to JSON.
                      * @returns JSON object
                      */
                     public toJSON(): { [k: string]: any };

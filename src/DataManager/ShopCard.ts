@@ -1,11 +1,20 @@
 import { DataManager } from 'src/DataManager/DataManager'
-
-export interface IShopGoods {
-  goodsId?: number,
-  count?: number,
-}
+import { com } from 'src/service/rpc/rpc'
+import IShopGoods = com.main.module.rpc.IShopGoods
 
 export class DMShopCard extends DataManager<IShopGoods> {
+  private static instance: DMShopCard | undefined = undefined
+
+  private constructor() {
+    super();
+    (window as any).DMShopCard = this
+  }
+
+  static GetInstance(): DMShopCard {
+    if (!DMShopCard.instance) { DMShopCard.instance = new DMShopCard() }
+    return DMShopCard.instance
+  }
+
   getKey(d: IShopGoods): any {
     return d.goodsId
   }
@@ -31,9 +40,9 @@ export class DMShopCard extends DataManager<IShopGoods> {
   }
 
   genTestData(): any {
-    for (let i = 0; i < 90000; i++) {
+    for (let i = 0; i < 90; i++) {
       this.SetStore({
-        goodsId: i+1,
+        goodsId: i + 1,
         count: 1,
       })
     }

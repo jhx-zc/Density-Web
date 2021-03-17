@@ -12,20 +12,19 @@ export abstract class DataManager<T> {
 
   protected constructor() {
     this.QueryAll();
-    (window as any).DMShopCard = this
   }
 
   abstract getKey(d: T): any
 
-  abstract queryAllAPI(): Promise<Array<T>>
+  protected abstract queryAllAPI(): Promise<Array<T>>
 
-  abstract queryOneAPI(d: T): Promise<T>
+  protected abstract queryOneAPI(d: T): Promise<T>
 
-  abstract addNewAPI(d: T): Promise<boolean>
+  protected abstract addNewAPI(d: T): Promise<boolean>
 
-  abstract updateOneAPI(d: T): Promise<boolean>
+  protected abstract updateOneAPI(d: T): Promise<boolean>
 
-  abstract deleteOneAPI(d: T): Promise<boolean>
+  protected abstract deleteOneAPI(d: T): Promise<boolean>
 
   abstract genTestData(): any
 

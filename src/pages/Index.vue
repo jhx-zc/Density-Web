@@ -61,7 +61,7 @@
 <script lang="ts">
   import { defineComponent, ref, onMounted, computed } from 'vue'
   import Detail from 'src/components/goods/Detail.vue'
-  import { IDMGoods } from 'src/DataManager/Goods'
+  import { DMGoods } from 'src/DataManager/Goods'
   import { com } from 'src/service/rpc/rpc'
   import rpc = com.main.module.rpc
 
@@ -73,7 +73,7 @@
     setup() {
       const showDetail = ref<Boolean>(false)
 
-      const dmGoods = IDMGoods.GetInstance()
+      const dmGoods = DMGoods.GetInstance()
       const container = dmGoods.GetAllData()
       const currentRowIndex = dmGoods.GetCurrentRowIndex()
       const currentGoods = computed(()=>{
@@ -100,28 +100,6 @@
       onMounted(() => {
         dmGoods.genTestData()
       })
-
-      /*dmGoods.GenTestData()
-
-      const goods = dmGoods.GetGoods()
-
-      const showDetail = ref<Boolean>(false)
-
-      const currentGoodsIndex = dmGoods.GetCurrentRowIndex()
-      const currentGoods = computed(() => {
-        return dmGoods.GetGoods().value[currentGoodsIndex.value]
-      })
-
-      const add2ShopCard = (oneGoods: rpc.IGoods) => {
-        dmGoods.SetCurrentRowIndex(oneGoods)
-      }
-
-      const ShowDetail = (oneGoods: rpc.IGoods) => {
-        dmGoods.SetCurrentRowIndex(oneGoods)
-        showDetail.value = true
-      }
-
-      const showShopCard = ()=>{}*/
 
       return { goods, add2ShopCard, ShowDetail, showDetail, currentGoods, showShopCard }
     },
