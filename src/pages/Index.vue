@@ -59,11 +59,11 @@
 </template>
 
 <script lang="ts">
-  import { defineComponent, ref, computed } from 'vue'
+  import { defineComponent, ref, onMounted, computed } from 'vue'
   import Detail from 'src/components/goods/Detail.vue'
   import { com } from 'src/service/rpc/rpc'
-  import rpc = com.main.module.rpc
-  import { DMGoods } from 'src/DataManager/Goods'
+  import { IDMGoods } from 'src/DataManager/Goods'
+  import { rpc } from 'protobufjs'
 
   export default defineComponent({
     name: 'PageIndex',
@@ -71,8 +71,31 @@
       Detail,
     },
     setup() {
-      const dmGoods = DMGoods.GetInstance()
-      dmGoods.GenTestData()
+      const showDetail = ref<Boolean>(false)
+
+      const dmGoods = IDMGoods.GetInstance()
+      const goods = dmGoods.GetAllData()
+      const currentRowIndex = dmGoods.GetCurrentRowIndex()
+      const currentGoods = computed(()=>{
+        return dmGoods.GetDataByIndex(currentRowIndex.value)
+      })
+
+      const add2ShopCard = (oneGoods: rpc.IGoods) => {
+        dmGoods.SetCurrentRowIndex(oneGoods)
+      }
+
+      const ShowDetail = (oneGoods: rpc.IGoods) => {
+        dmGoods.SetCurrentRowIndex(oneGoods)
+        showDetail.value = true
+      }
+
+      const showShopCard = ()=>{}
+
+      onMounted(() => {
+        dmGoods.genTestData()
+      })
+
+      /*dmGoods.GenTestData()
 
       const goods = dmGoods.GetGoods()
 
@@ -92,9 +115,9 @@
         showDetail.value = true
       }
 
-      const showShopCard = ()=>{}
+      const showShopCard = ()=>{}*/
 
-      return { goods, add2ShopCard, ShowDetail, showDetail, currentGoods,showShopCard }
+      return { goods, add2ShopCard, ShowDetail, showDetail, currentGoods, showShopCard }
     },
   })
 </script>
