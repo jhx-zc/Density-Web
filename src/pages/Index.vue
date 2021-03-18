@@ -107,6 +107,7 @@
 
 <style lang="scss">
   .index-page {
+    overflow: auto;
     .pic-area {
       max-width: 80vw;
     }

@@ -1,8 +1,10 @@
 <template>
-  <q-layout view="lHh Lpr lFf">
+  <q-layout view="hHh Lpr lff">
     <q-header elevated>
       <q-toolbar>
         <q-toolbar-title>
+          <q-btn flat @click="showLeftShopCardDrawer = !showLeftShopCardDrawer" round dense icon="menu"
+                 v-if='loginStatus?.isLogin===true'/>
           {{ $t('common.projectName') }}
         </q-toolbar-title>
 
@@ -11,12 +13,39 @@
             {{ loginStatus?.username ?? '' }}
           </div>
           <q-btn flat round dense icon="shopping_cart" class='q-ml-md' @click='onShopCardClick'/>
+          <q-btn flat @click="showRightShopCardDrawer = !showRightShopCardDrawer" round dense icon="menu"/>
         </template>
       </q-toolbar>
     </q-header>
-    <q-page-container>
-      <router-view class="main-page-container"/>
-    </q-page-container>
+
+    <q-drawer
+      bordered
+      v-if='loginStatus?.isLogin===true'
+      v-model="showLeftShopCardDrawer"
+      :width="280"
+      :breakpoint="700"
+    >
+      <q-scroll-area class="fit">
+        <div class="q-pa-sm">
+          <div v-for="n in 50" :key="n">aaa {{ n }} / 50</div>
+        </div>
+      </q-scroll-area>
+    </q-drawer>
+
+    <q-drawer
+      bordered
+      v-if='loginStatus?.isLogin===true'
+      v-model="showRightShopCardDrawer"
+      :width="280"
+      :breakpoint="700"
+      side="right"
+    >
+      <q-scroll-area class="fit">
+        <div class="q-pa-sm">
+          <div v-for="n in 50" :key="n">Drawer {{ n }} / 50</div>
+        </div>
+      </q-scroll-area>
+    </q-drawer>
 
     <q-dialog v-model='showShopCard' persistent class='z-top' full-height>
       <q-card class='main-shop-card-page'>
@@ -31,6 +60,10 @@
         </q-card-section>
       </q-card>
     </q-dialog>
+
+    <q-page-container>
+      <router-view class="main-page-container"/>
+    </q-page-container>
   </q-layout>
 </template>
 
@@ -46,11 +79,19 @@
     },
     setup() {
       const showShopCard = ref<Boolean>(false)
-
+      const showLeftShopCardDrawer = ref<Boolean>(false)
+      const showRightShopCardDrawer = ref<Boolean>(false)
       const onShopCardClick = () => {
         showShopCard.value = true
       }
-      return { loginStatus, showShopCard, onShopCardClick }
+
+      return {
+        loginStatus,
+        showShopCard,
+        onShopCardClick,
+        showLeftShopCardDrawer,
+        showRightShopCardDrawer,
+      }
     },
   })
 </script>
@@ -63,10 +104,12 @@
   .main-shop-card-page {
     width: 70vw;
     max-width: unset !important;
+
     & > div {
       padding: 8px;
     }
-    .shop-card-content{
+
+    .shop-card-content {
       height: calc(100% - 50px);
     }
   }
