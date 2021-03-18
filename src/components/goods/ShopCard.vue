@@ -19,14 +19,14 @@
                   <q-img :src='GetShopImgByGoodsId(item.goodsId)'/>
                 </div>
                 <div class='col-9 q-pl-md row column full-height'>
-                  <div class='col-3'>
+                  <div class='col-3 text-subtitle1'>
                     {{ GetGoodsNameById(item.goodsId) }}
                   </div>
                   <div class='col-7' style='overflow: auto'>
                     {{ GetGoodsBriefById(item.goodsId) }}
                   </div>
-                  <div class='col-2'>
-                    {{ GetGoodsPriceById(item.goodsId) }}
+                  <div class='col-2 text-deep-orange-5'>
+                    单价： {{ GetGoodsPriceById(item.goodsId) }} 元
                   </div>
                 </div>
               </div>
